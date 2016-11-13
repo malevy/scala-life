@@ -27,7 +27,9 @@ class LifeCycleSteps {
   @Given("the following universe $initialCellStates")
   def CreateUniverse(initialCellStates:String): Unit = {
 
-    val states = initialCellStates.split("\n") // rows
+    val lineEndingsRemoved = initialCellStates.replace("\r", "").replace("\n", "|")
+
+    val states = lineEndingsRemoved.split('|') // rows
       .map(row => row.split(" ").map(col => col.toInt))
 
     universe = new Universe(states)

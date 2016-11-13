@@ -8,9 +8,7 @@ object Driver extends App{
     while(true) {
       dump(universe)
       universe = universe.evolve()
-
     }
-
   }
 
   def dump(universe: Universe) : Unit = {

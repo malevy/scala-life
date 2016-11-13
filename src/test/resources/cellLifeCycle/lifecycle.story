@@ -35,6 +35,6 @@ Scenario: Any dead cell with exactly three live neighbours becomes a live cell, 
 Given the following universe
 1 1 0
 0 0 1
-0 0 1
+0 0 0
 When the next generation is calculated
 Then the cell at row:1 col:1 should be ALIVE

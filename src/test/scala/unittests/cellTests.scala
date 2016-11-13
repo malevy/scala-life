@@ -1,6 +1,5 @@
 package unittests
 
-import junit.framework.TestCase
 import org.junit.Assert._
 import net.malevy.Cell
 import org.junit.Test
@@ -45,6 +44,14 @@ class cellTests {
     val nextGen = cell.observe(makeNeighbors(8,3))
 
     assertEquals("the cell should live", Cell.Alive, nextGen.state)
+  }
+
+  @Test
+  def whenADeadCellHasEightNeighbors_ItStaysDead(): Unit = {
+    val cell = new Cell(Cell.Dead)
+    val nextGen = cell.observe(makeNeighbors(8,0))
+
+    assertEquals("the cell should live", Cell.Dead, nextGen.state)
   }
 
   private def makeNeighbors(total: Int, live: Int):Seq[Cell] = {
