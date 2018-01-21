@@ -3,6 +3,8 @@ package unittests
 import org.junit.Assert._
 import net.malevy.Cell
 import org.junit.Test
+import org.hamcrest.core.Is._
+
 
 class cellTests {
 
@@ -11,7 +13,7 @@ class cellTests {
     val cell = new Cell(Cell.Alive)
     val nextGen = cell.observe(makeNeighbors(8,1))
 
-    assertEquals("the cell should die", Cell.Dead, nextGen.state)
+    assertThat("the cell should die", nextGen.state, is(Cell.Dead))
   }
 
   @Test
@@ -19,7 +21,7 @@ class cellTests {
     val cell = new Cell(Cell.Alive)
     val nextGen = cell.observe(makeNeighbors(8,2))
 
-    assertEquals("the cell should be alive", Cell.Alive, nextGen.state)
+    assertThat("the cell should be alive", nextGen.state, is(Cell.Alive))
   }
 
   @Test
@@ -27,7 +29,7 @@ class cellTests {
     val cell = new Cell(Cell.Alive)
     val nextGen = cell.observe(makeNeighbors(8,3))
 
-    assertEquals("the cell should be alive", Cell.Alive, nextGen.state)
+    assertThat("the cell should be alive", nextGen.state, is(Cell.Alive))
   }
 
   @Test
@@ -35,7 +37,7 @@ class cellTests {
     val cell = new Cell(Cell.Alive)
     val nextGen = cell.observe(makeNeighbors(8,4))
 
-    assertEquals("the cell should die", Cell.Dead, nextGen.state)
+    assertThat("the cell should die", nextGen.state, is(Cell.Dead))
   }
 
   @Test
@@ -43,7 +45,7 @@ class cellTests {
     val cell = new Cell(Cell.Dead)
     val nextGen = cell.observe(makeNeighbors(8,3))
 
-    assertEquals("the cell should live", Cell.Alive, nextGen.state)
+    assertThat("the cell should be alive", nextGen.state, is(Cell.Alive))
   }
 
   @Test
@@ -51,7 +53,7 @@ class cellTests {
     val cell = new Cell(Cell.Dead)
     val nextGen = cell.observe(makeNeighbors(8,0))
 
-    assertEquals("the cell should live", Cell.Dead, nextGen.state)
+    assertThat("the cell should die", nextGen.state, is(Cell.Dead))
   }
 
   private def makeNeighbors(total: Int, live: Int):Seq[Cell] = {
