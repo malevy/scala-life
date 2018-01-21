@@ -2,6 +2,7 @@ package cellLifeCycle
 
 import net.malevy.Universe
 import net.malevy.Cell
+import org.hamcrest.core._
 import org.jbehave.core.annotations._
 import org.junit.Assert._
 
@@ -27,12 +28,7 @@ class LifeCycleSteps {
   @Given("the following universe $initialCellStates")
   def CreateUniverse(initialCellStates:String): Unit = {
 
-    val lineEndingsRemoved = initialCellStates.replace("\r", "").replace("\n", "|")
-
-    val states = lineEndingsRemoved.split('|') // rows
-      .map(row => row.split(" ").map(col => col.toInt))
-
-    universe = new Universe(states)
+    universe = buildUniverseFrom(initialCellStates)
   }
 
   @When("the next generation is calculated")
@@ -55,5 +51,23 @@ class LifeCycleSteps {
     else assertEquals("the indicated cell did not have the expected state", expectedState, finalState)
   }
 
+  @Then("the universe should look like $finalCellStates")
+  def assertFullUniverse(finalCellStates:String): Unit = {
+    val expectedUniverse = buildUniverseFrom(finalCellStates)
+
+    assertThat(universe, Is.is(expectedUniverse))
+  }
+
+  def buildUniverseFrom(cellStates:String) : Universe = {
+    val lineEndingsRemoved = cellStates
+      .replace("\r", "")
+      .replace("\n", "|")
+
+    val states = lineEndingsRemoved
+      .split('|') // rows
+      .map(row => row.split(" ").map(col => col.toInt))
+
+    new Universe(states)
+  }
 
 }
