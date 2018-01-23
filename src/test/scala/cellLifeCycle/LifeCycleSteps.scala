@@ -3,6 +3,7 @@ package cellLifeCycle
 import net.malevy.Universe
 import net.malevy.Cell
 import org.hamcrest.core._
+import org.hamcrest.core.Is._
 import org.jbehave.core.annotations._
 import org.junit.Assert._
 
@@ -48,14 +49,22 @@ class LifeCycleSteps {
     })
 
     if (-1 == finalState) throw new IllegalArgumentException(s"[$row, $col] is not within the given matrix")
-    else assertEquals("the indicated cell did not have the expected state", expectedState, finalState)
+    else assertThat("the indicated cell did not have the expected state", finalState, is(expectedState))
   }
 
   @Then("the universe should look like $finalCellStates")
   def assertFullUniverse(finalCellStates:String): Unit = {
-    val expectedUniverse = buildUniverseFrom(finalCellStates)
 
-    assertThat(universe, Is.is(expectedUniverse))
+    val pattern = finalCellStates
+      .replace("\r", "")
+      .replace("\n","")
+      .replace("*","[01]")
+      .replace(" ", "")
+      .trim
+
+    val actual = universe.toString
+
+    assertThat(s"did not match actual of $actual with $pattern", actual.matches(pattern), is(true))
   }
 
   def buildUniverseFrom(cellStates:String) : Universe = {
